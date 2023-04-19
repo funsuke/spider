@@ -1,0 +1,211 @@
+{
+	"width": 1280,
+	"height": 720,
+	"fps": 30,
+	"main": "./script/_bootstrap.js",
+	"assets": {
+		"_bootstrap": {
+			"type": "script",
+			"path": "script/_bootstrap.js",
+			"global": true
+		},
+		"main": {
+			"type": "script",
+			"path": "script/main.js",
+			"global": true
+		},
+		"parameterObject": {
+			"type": "script",
+			"path": "script/parameterObject.js",
+			"global": true
+		},
+		"nc276103": {
+			"type": "image",
+			"path": "image/nc276103.png",
+			"width": 1540,
+			"height": 660
+		},
+		"nc298326": {
+			"type": "audio",
+			"path": "audio/nc298326",
+			"systemId": "music",
+			"duration": 183725
+		},
+		"score": {
+			"type": "image",
+			"path": "image/score.png",
+			"width": 192,
+			"height": 192
+		},
+		"time": {
+			"type": "image",
+			"path": "image/time.png",
+			"width": 76,
+			"height": 76
+		},
+		"title": {
+			"type": "image",
+			"path": "image/title.png",
+			"width": 1280,
+			"height": 720
+		},
+		"se_clear": {
+			"type": "audio",
+			"path": "audio/se_clear",
+			"systemId": "sound",
+			"duration": 732
+		},
+		"se_miss": {
+			"type": "audio",
+			"path": "audio/se_miss",
+			"systemId": "sound",
+			"duration": 360
+		},
+		"se_move": {
+			"type": "audio",
+			"path": "audio/se_move",
+			"systemId": "sound",
+			"duration": 105
+		},
+		"se_start": {
+			"type": "audio",
+			"path": "audio/se_start",
+			"systemId": "sound",
+			"duration": 1701
+		},
+		"number": {
+			"type": "image",
+			"path": "image/number.png",
+			"width": 728,
+			"height": 128
+		},
+		"number_red": {
+			"type": "image",
+			"path": "image/number_red.png",
+			"width": 728,
+			"height": 128
+		},
+		"start": {
+			"type": "image",
+			"path": "image/start.png",
+			"width": 800,
+			"height": 500
+		},
+		"undo": {
+			"type": "image",
+			"path": "image/undo.png",
+			"width": 200,
+			"height": 140
+		},
+		"volume": {
+			"type": "image",
+			"path": "image/volume.png",
+			"width": 128,
+			"height": 64
+		},
+		"glyph": {
+			"type": "text",
+			"path": "text/glyph.json"
+		},
+		"gameMain": {
+			"type": "script",
+			"path": "script/gameMain.js",
+			"global": true
+		},
+		"utilAkashic": {
+			"type": "script",
+			"path": "script/utilAkashic.js",
+			"global": true
+		},
+		"se_timeUp": {
+			"type": "audio",
+			"path": "audio/se_timeUp",
+			"systemId": "sound",
+			"duration": 1080
+		},
+		"sceneGame": {
+			"type": "script",
+			"path": "script/sceneGame.js",
+			"global": true
+		},
+		"result": {
+			"type": "image",
+			"path": "image/result.png",
+			"width": 365,
+			"height": 500
+		},
+		"imgCard": {
+			"type": "image",
+			"path": "image/imgCard.png",
+			"width": 330,
+			"height": 165
+		},
+		"imgConfig": {
+			"type": "image",
+			"path": "image/imgConfig.png",
+			"width": 80,
+			"height": 80
+		},
+		"button": {
+			"type": "script",
+			"path": "script/button.js",
+			"global": true
+		},
+		"card": {
+			"type": "script",
+			"path": "script/card.js",
+			"global": true
+		},
+		"cardArea": {
+			"type": "script",
+			"path": "script/cardArea.js",
+			"global": true
+		},
+		"cardDeck": {
+			"type": "script",
+			"path": "script/cardDeck.js",
+			"global": true
+		},
+		"cardField": {
+			"type": "script",
+			"path": "script/cardField.js",
+			"global": true
+		},
+		"cardFound": {
+			"type": "script",
+			"path": "script/cardFound.js",
+			"global": true
+		},
+		"config": {
+			"type": "script",
+			"path": "script/config.js",
+			"global": true
+		},
+		"saveData": {
+			"type": "script",
+			"path": "script/saveData.js",
+			"global": true
+		}
+	},
+	"moduleMainScripts": {
+		"@akashic-extension/akashic-timeline": "node_modules/@akashic-extension/akashic-timeline/lib/index.js"
+	},
+	"environment": {
+		"sandbox-runtime": "3",
+		"nicolive": {
+			"supportedModes": [
+				"ranking"
+			],
+			"preferredSessionParameters": {
+				"totalTimeLimit": 200
+			}
+		}
+	},
+	"globalScripts": [
+		"node_modules/@akashic-extension/akashic-timeline/lib/ActionType.js",
+		"node_modules/@akashic-extension/akashic-timeline/lib/Easing.js",
+		"node_modules/@akashic-extension/akashic-timeline/lib/Timeline.js",
+		"node_modules/@akashic-extension/akashic-timeline/lib/Tween.js",
+		"node_modules/@akashic-extension/akashic-timeline/lib/index.js"
+	]
+}
