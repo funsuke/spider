@@ -23,11 +23,9 @@ export class Config extends g.FrameSprite {
 		// 画像押下時処理
 		// =============================
 		this.onPointDown.add((ev) => {
-			console.log("SceneConfig::onPointDown_in");
 			this.frameNumber = 1 - this.frameNumber;
 			this.modified();
 			this.bgmEvent();
-			console.log("SceneConfig::onPointDown_out");
 		});
 	}
 }

@@ -185,6 +185,12 @@
 			"type": "script",
 			"path": "script/saveData.js",
 			"global": true
+		},
+		"cheat": {
+			"type": "image",
+			"path": "image/cheat.png",
+			"width": 1280,
+			"height": 720
 		}
 	},
 	"moduleMainScripts": {

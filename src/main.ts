@@ -23,6 +23,9 @@
 //   nxt = ave + (scr-ave) / (ply+1)
 // 初心者用四川省シャッフル消す
 
+// 詰み判定
+// 操作しない場合、成績無視
+
 import { GameMainParameterObject } from "./parameterObject";
 import { SceneGame } from "./sceneGame";
 

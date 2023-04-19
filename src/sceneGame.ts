@@ -25,6 +25,7 @@ export class SceneGame extends g.Scene {
 	private saveData: SaveData;
 	private layer0: g.E;
 	private bgmPlayer: g.AudioPlayer;
+	private isCheat: boolean;
 
 	/**
 	 * コンストラクタ
@@ -43,6 +44,7 @@ export class SceneGame extends g.Scene {
 				"se_start", "se_timeUp",					// 効果音
 				"se_move", "se_miss", "se_clear",
 				"volume",													// config関連
+				"cheat",
 			],
 		});
 		this.timeLine = new tl.Timeline(this);
@@ -313,8 +315,12 @@ export class SceneGame extends g.Scene {
 				}
 				// セーブデータ表示
 				this.append(this.saveData);
-				this.saveData.calcSaveData(this.isClear ? true : false);
-				this.saveData.show();
+				if (g.game.vars.gameState.score !== 0) {
+					this.saveData.calcSaveData(this.isClear ? true : false);
+				}
+				if (!this.isCheat) {
+					this.saveData.show();
+				}
 				// アツマール処理
 				this.setTimeout(() => {
 					if (param.isAtsumaru) {
@@ -363,6 +369,17 @@ export class SceneGame extends g.Scene {
 		this.addScore = (score) => {
 			if (score === 0) return;
 			if (!this.isStart) return;
+			let s: number = g.game.vars.gameState.score - 13 ** 2 * 8 * 100;
+			if (s > 180 || (s > 0 && s <= 180 && score >= 100)) {
+				this.isCheat = true;
+				g.game.vars.gameState.score = 0;
+				new g.Sprite({
+					scene: this,
+					src: this.asset.getImageById("cheat"),
+					parent: this,
+				});
+				return;
+			}
 			g.game.vars.gameState.score += score;
 			// スコアアップアニメーション
 			this.timeLine.create(this).every((e: number, p: number) => {
@@ -397,7 +414,9 @@ export class SceneGame extends g.Scene {
 		// リセット処理
 		// =============================
 		this.reset = (): void => {
-			//
+			// チートフラグ
+			this.isCheat = false;
+			// クリアフラグ
 			this.isClear = false;
 			// 個人成績
 			this.saveData.hide();

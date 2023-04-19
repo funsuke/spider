@@ -175,39 +175,42 @@ export class GameMain extends g.E {
 			if (!scene.isStart) return;
 			// bkCards = null;
 			// bkArea = null;
+			let isMove: boolean = false;
 			// 元ダブルクリック時処理
 			for (let i = 0; i < fieldAreas.length; i++) {
 				const srcArea = fieldAreas[i];
 				// 動かそうとしているカード(複数)の取得
 				const cards = srcArea.getCards(ev.point.x, ev.point.y);
 				if (!cards) continue;
-				let flg: boolean = false;
-				let dstSpaceArea: CardField = null;
+				let moveArea: CardField = null;
+				let moveSpaceArea: CardField = null;
 				for (let j = 1; j < fieldAreas.length; j++) {
 					const dstArea = fieldAreas[(i + j) % fieldAreas.length];
 					const isAddPattern: number = dstArea.isAddCards(cards.cards);
 					if (isAddPattern === 1) {		// カードの上に乗せられる場合
 						if (cards.cards.length + dstArea.getCompCardNum() === 13) {
 							moveSub(srcArea, dstArea, cards.num);
-							flg = true;
+							isMove = true;
 							break;
 						}
-						moveSub(srcArea, dstArea, cards.num);
-						flg = true;
-						break;
-					} else if (isAddPattern === 2 && dstSpaceArea === null) {	// 空き場
-						dstSpaceArea = fieldAreas[(i + j) % fieldAreas.length];
+						if (moveArea === null) {
+							moveArea = dstArea;
+						}
+					} else if (isAddPattern === 2 && moveSpaceArea === null) {	// 空き場
+						moveSpaceArea = dstArea;
 					}
 				}
 				// 動ける山札があるか、空白の山札がある場合
-				if (flg || dstSpaceArea !== null) {
-					if (!flg) {
-						moveSub(srcArea, dstSpaceArea, cards.num);
+				if (!isMove) {
+					if (moveArea !== null) {
+						moveSub(srcArea, moveArea, cards.num);
+					} else if (moveSpaceArea !== null) {
+						moveSub(srcArea, moveSpaceArea, cards.num);
+					} else {
+						scene.playSound("se_miss");
 					}
-					break;
-				} else {
-					scene.playSound("se_miss");
 				}
+				break;
 			}
 			// ドラッグしようとする処理 del by funsuke 2023.4.16
 		});

@@ -332,7 +332,6 @@ export class CardField extends CardArea {
 		// 揃っている位置の取得
 		// =============================
 		this.getCompCardPos = () => {
-			console.log("********cardField::getCompCardPos_in");
 			let num = 0;
 			for (let i = this.list.length - 1; i >= 0; i--) {
 				const c = this.list[i];
@@ -342,8 +341,6 @@ export class CardField extends CardArea {
 					break;
 				}
 			}
-			console.log("list.length = " + this.list.length);
-			console.log("num = " + num);
 			if (num === 13) {
 				return this.list.length - num;
 			} else {
