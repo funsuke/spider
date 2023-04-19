@@ -186,19 +186,16 @@ export class GameMain extends g.E {
 				for (let j = 1; j < fieldAreas.length; j++) {
 					const dstArea = fieldAreas[(i + j) % fieldAreas.length];
 					const isAddPattern: number = dstArea.isAddCards(cards.cards);
-					if (isAddPattern === 1) {
-						console.log("********gameMain::onPointDown_in");
-						console.log("cards.length = " + cards.cards.length);
-						console.log("dstAra.getCompCardPos() = " + dstArea.getCompCardPos());
-						// if (cards.cards.length + dstArea.getCompCardPos() === 13) {
-						// 	moveSub(srcArea, dstArea, cards.num);
-						// 	flg = true;
-						// 	break;
-						// }
+					if (isAddPattern === 1) {		// カードの上に乗せられる場合
+						if (cards.cards.length + dstArea.getCompCardNum() === 13) {
+							moveSub(srcArea, dstArea, cards.num);
+							flg = true;
+							break;
+						}
 						moveSub(srcArea, dstArea, cards.num);
 						flg = true;
 						break;
-					} else if (isAddPattern === 2 && dstSpaceArea === null) {
+					} else if (isAddPattern === 2 && dstSpaceArea === null) {	// 空き場
 						dstSpaceArea = fieldAreas[(i + j) % fieldAreas.length];
 					}
 				}

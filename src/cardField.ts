@@ -246,6 +246,7 @@ import { SceneGame } from "./sceneGame";
 export class CardField extends CardArea {
 	public sortCards: () => void;
 	public getCompCardPos: () => number;
+	public getCompCardNum: () => number;
 	/**
 	 * コンストラクタ
 	 * @param gameMain ゲーム画面
@@ -276,15 +277,15 @@ export class CardField extends CardArea {
 		// =============================
 		this.isAddCards = (cards) => {
 			if (!this.list.length) {
-				return 2;
+				return 2;		// 空き場
 			} else {
 				const lastCard = this.list.slice(-1)[0];
 				const card = cards[0];
 				if (card.num + 1 === lastCard.num) {
-					return 1;
+					return 1;		// カードの上に乗せられる場合
 				}
 			}
-			return 0;
+			return 0;		// 動かせない
 		};
 		// =============================
 		// 位置を並べなおす
@@ -331,6 +332,7 @@ export class CardField extends CardArea {
 		// 揃っている位置の取得
 		// =============================
 		this.getCompCardPos = () => {
+			console.log("********cardField::getCompCardPos_in");
 			let num = 0;
 			for (let i = this.list.length - 1; i >= 0; i--) {
 				const c = this.list[i];
@@ -340,11 +342,30 @@ export class CardField extends CardArea {
 					break;
 				}
 			}
+			console.log("list.length = " + this.list.length);
+			console.log("num = " + num);
 			if (num === 13) {
 				return this.list.length - num;
 			} else {
 				return -1;
 			}
+		};
+
+		/**
+		 * 揃っているカードの数(上から)
+		 */
+		this.getCompCardNum = () => {
+			let num: number = 1;
+			for (let i = this.list.length - 1; i > 0; i--) {
+				const c = this.list[i];
+				const pre = this.list[i - 1];
+				if (pre.isOpen && pre.num === c.num + 1) {
+					++num;
+				} else {
+					break;
+				}
+			}
+			return num;
 		};
 
 		// =============================
