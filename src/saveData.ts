@@ -36,7 +36,7 @@ export class SaveData extends g.Sprite {
 			text: "0",
 			font: scene.font,
 			fontSize: 20,
-			width: 300,
+			width: 320,
 			textAlign: "right",
 			widthAutoAdjust: false,
 			parent: this,
