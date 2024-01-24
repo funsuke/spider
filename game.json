@@ -29,7 +29,13 @@
 			"type": "audio",
 			"path": "audio/nc298326",
 			"systemId": "music",
-			"duration": 183725
+			"duration": 183725,
+			"hint": {
+				"extensions": [
+					".aac",
+					".ogg"
+				]
+			}
 		},
 		"score": {
 			"type": "image",
@@ -53,25 +59,49 @@
 			"type": "audio",
 			"path": "audio/se_clear",
 			"systemId": "sound",
-			"duration": 732
+			"duration": 732,
+			"hint": {
+				"extensions": [
+					".aac",
+					".ogg"
+				]
+			}
 		},
 		"se_miss": {
 			"type": "audio",
 			"path": "audio/se_miss",
 			"systemId": "sound",
-			"duration": 360
+			"duration": 360,
+			"hint": {
+				"extensions": [
+					".aac",
+					".ogg"
+				]
+			}
 		},
 		"se_move": {
 			"type": "audio",
 			"path": "audio/se_move",
 			"systemId": "sound",
-			"duration": 105
+			"duration": 105,
+			"hint": {
+				"extensions": [
+					".aac",
+					".ogg"
+				]
+			}
 		},
 		"se_start": {
 			"type": "audio",
 			"path": "audio/se_start",
 			"systemId": "sound",
-			"duration": 1701
+			"duration": 1701,
+			"hint": {
+				"extensions": [
+					".aac",
+					".ogg"
+				]
+			}
 		},
 		"number": {
 			"type": "image",
@@ -121,7 +151,13 @@
 			"type": "audio",
 			"path": "audio/se_timeUp",
 			"systemId": "sound",
-			"duration": 1080
+			"duration": 1080,
+			"hint": {
+				"extensions": [
+					".aac",
+					".ogg"
+				]
+			}
 		},
 		"sceneGame": {
 			"type": "script",
@@ -191,6 +227,24 @@
 			"path": "image/cheat.png",
 			"width": 1280,
 			"height": 720
+		},
+		"attention": {
+			"type": "image",
+			"path": "image/attention.png",
+			"width": 500,
+			"height": 100
+		},
+		"nc169036": {
+			"type": "audio",
+			"path": "audio/nc169036",
+			"systemId": "sound",
+			"duration": 1777,
+			"hint": {
+				"extensions": [
+					".aac",
+					".ogg"
+				]
+			}
 		}
 	},
 	"moduleMainScripts": {

@@ -414,6 +414,7 @@ export class CardField extends CardArea {
 		 * 一番上のカードの束を取得
 		 */
 		this.getTopCardBlocLower = () => {
+			if (!this.list[this.list.length - 1].isOpen) return 0;
 			return this.list[this.list.length - this.getCompCardNum()].num;
 		};
 	}

@@ -41,22 +41,23 @@ export class GameMain extends g.E {
 			console.log("********gameMain::getMateState_in");
 			let canMove: boolean = false;
 			for (let i = 0; i < fieldAreas.length; i++) {
-				// console.log("fieldAreas.index = " + i);
-				// console.log("fieldAreas[i].list.length = " + fieldAreas[i].list.length);
+				console.log("fieldAreas.index = " + i);
+				console.log("fieldAreas[i].list.length = " + fieldAreas[i].list.length);
 				if (fieldAreas[i].list.length === 0) continue;
 				const lower: number = fieldAreas[i].getTopCardBlocLower();
-				// console.log("lower = " + lower);
+				console.log("lower = " + lower);
+				if (lower === 0) return 0;
 				for (let j = 1; j < fieldAreas.length; j++) {
-					// console.log("----------------");
+					console.log("----------------");
 					const dst: CardField = fieldAreas[(i + j) % fieldAreas.length];
 					const dstLen: number = dst.list.length;
 					const card: Card = dst.list[dstLen - 1];
-					// console.log("    dst.index = " + ((i + j) % fieldAreas.length));
-					// console.log("    dst.list.length = " + dst.list.length);
+					console.log("    dst.index = " + ((i + j) % fieldAreas.length));
+					console.log("    dst.list.length = " + dst.list.length);
 					if (dstLen === 0 || (card.isOpen && card.num === lower + 1)) {
-						// if (dst.list.length > 0) {
-						// 	console.log("    dst.list[dst.list.length - 1].num = " + dst.list[dst.list.length - 1].num);
-						// }
+						if (dst.list.length > 0) {
+							console.log("    dst.list[dst.list.length - 1].num = " + dst.list[dst.list.length - 1].num);
+						}
 						canMove = true;
 						break;
 					}
@@ -111,6 +112,9 @@ export class GameMain extends g.E {
 				if (idx >= 0 && blocks[idx].lower === 13) break;
 			}
 			// 動かせない場合
+			console.log("canMove = " + canMove);
+			console.log("isNotPluralAll = " + isNotPluralAll);
+			console.log("idx = " + idx);
 			if ((!canMove || isNotPluralAll) && idx < 0) {
 				// 山札がない場合、完全詰み(GameOver)
 				if (deckArea.list.length === 0) return 2;
@@ -161,7 +165,9 @@ export class GameMain extends g.E {
 			});
 		}
 		// 積んでるか確認
+		console.log("場札に配る_in  mateState=" + this.mateState);
 		this.mateState = this.getMateState();
+		console.log("場札に配る_out mateState=" + this.mateState);
 		// 場札ソート
 		fieldAreas.forEach((area, i) => {
 			area.sortCards();
@@ -195,13 +201,16 @@ export class GameMain extends g.E {
 					gameClear();
 				}
 			});
+			// 積んでるかどうか
 			this.mateState = this.getMateState();
+			console.log("deckArea::onPointDown mateState=" + this.mateState);
 		});
 		// =============================
 		// 揃っているかどうかの確認と移動
 		// =============================
 		let compCnt: number = 0;
 		const autoMove = (): boolean => {
+			let retFlg: boolean = false;
 			for (let i = 0; i < fieldAreas.length; i++) {
 				const area = fieldAreas[i];
 				const num = area.getCompCardPos();
@@ -218,12 +227,13 @@ export class GameMain extends g.E {
 					}
 					foundAreas[compCnt].sortCards();
 					compCnt++;
-					// 詰んでるか確認
-					this.mateState = this.getMateState();
-					return true;
+					retFlg = true;
 				}
 			}
-			return false;
+			// 詰んでるか確認
+			this.mateState = this.getMateState();
+			console.log("gameMain::autoMove mateState=" + this.mateState);
+			return retFlg;
 		};
 		// =============================
 		// スコア集計

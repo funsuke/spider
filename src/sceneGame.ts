@@ -14,7 +14,7 @@ export class SceneGame extends g.Scene {
 	// プロパティ
 	public timeLine: tl.Timeline;
 	public addScore: (score: number) => void;
-	public isDebug: boolean = true;
+	public isDebug: boolean = false;
 	public isStart: boolean = false;
 	public isClear: boolean;
 	public font: g.Font;
@@ -332,7 +332,7 @@ export class SceneGame extends g.Scene {
 					// 詰みの場合
 					sprAttention.show();
 				}
-				if (!isSoundPlayed) {
+				if (!isSoundPlayed && !this.isClear) {
 					this.playSound("nc169036");
 					isSoundPlayed = true;
 				}
@@ -458,13 +458,15 @@ export class SceneGame extends g.Scene {
 		// リセット処理
 		// =============================
 		this.reset = (): void => {
+			// うんこ
+			sprAttention.hide();
 			// チートフラグ
 			this.isCheat = false;
 			// クリアフラグ
 			this.isClear = false;
 			// 個人成績
 			this.saveData.hide();
-			// ゲーム画面
+			// ゲーム画面1
 			gameMain.destroy();
 			gameMain = new GameMain(param);
 			this.layer0.append(gameMain);
