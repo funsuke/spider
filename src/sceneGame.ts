@@ -14,7 +14,7 @@ export class SceneGame extends g.Scene {
 	// プロパティ
 	public timeLine: tl.Timeline;
 	public addScore: (score: number) => void;
-	public isDebug: boolean = false;
+	public isDebug: boolean = true;
 	public isStart: boolean = false;
 	public isClear: boolean;
 	public font: g.Font;
@@ -43,8 +43,9 @@ export class SceneGame extends g.Scene {
 				"result",
 				"se_start", "se_timeUp",					// 効果音
 				"se_move", "se_miss", "se_clear",
+				"nc169036",
 				"volume",													// config関連
-				"cheat",
+				"cheat", "attention",
 			],
 		});
 		this.timeLine = new tl.Timeline(this);
@@ -262,6 +263,25 @@ export class SceneGame extends g.Scene {
 			widthAutoAdjust: false,
 			parent: sprState,
 		});
+		// -----------------------------
+		// 山札をクリック！アニメーション
+		// -----------------------------
+		const sprAttention = new g.FrameSprite({
+			scene: this,
+			src: this.asset.getImageById("attention"),
+			x: 1175,
+			y: g.game.height - 200,
+			width: 100,
+			height: 100,
+			srcWidth: 100,
+			srcHeight: 100,
+			frames: [0, 1, 2, 3, 4],
+			interval: 1000 / g.game.fps * 5,
+			loop: true,
+			parent: this,
+		});
+		sprAttention.hide();
+		sprAttention.start();
 
 		// -----------------------------
 		// アツマール処理
@@ -299,7 +319,31 @@ export class SceneGame extends g.Scene {
 		// =============================
 		// updateHandler
 		// =============================
+		let isSoundPlayed: boolean = true;
 		const updateHandler = (): void => {
+			// -----------------------------
+			// 詰み状態の判定
+			// -----------------------------
+			if (gameMain.mateState !== 0) {
+				// 完全詰みの場合
+				if (gameMain.mateState === 2) {
+					;
+				} else {
+					// 詰みの場合
+					sprAttention.show();
+				}
+				if (!isSoundPlayed) {
+					this.playSound("nc169036");
+					isSoundPlayed = true;
+				}
+			} else {
+				// 隠す
+				sprAttention.hide();
+				isSoundPlayed = false;
+			}
+			// -----------------------------
+			// ゲームエンド確定状態
+			// -----------------------------
 			if ((this.time < 0 || this.isClear) && this.isStart) {
 				// ボタン表示メソッド
 				const showButton = (): void => {

@@ -241,12 +241,23 @@ import { GameMain } from "./gameMain";
 import { SceneGame } from "./sceneGame";
 
 /**
+ * カードの束
+ * upper number 一番上(小さい)の数値
+ * lower number 一番下(大きい)の数値
+ */
+export interface CardBlock {
+	upper: number;
+	lower: number;
+}
+
+/**
  * カード置き場クラス(場)
  */
 export class CardField extends CardArea {
 	public sortCards: () => void;
 	public getCompCardPos: () => number;
 	public getCompCardNum: () => number;
+	public getTopCardBlocLower: () => number;
 	/**
 	 * コンストラクタ
 	 * @param gameMain ゲーム画面
@@ -356,8 +367,8 @@ export class CardField extends CardArea {
 			for (let i = this.list.length - 1; i > 0; i--) {
 				const c = this.list[i];
 				const pre = this.list[i - 1];
-				if (pre.isOpen && pre.num === c.num + 1) {
-					++num;
+				if (pre.isOpen && (pre.num === c.num + 1)) {
+					num++;
 				} else {
 					break;
 				}
@@ -397,6 +408,13 @@ export class CardField extends CardArea {
 				}
 			}
 			return cnt ** 2 * 100;
+		};
+
+		/**
+		 * 一番上のカードの束を取得
+		 */
+		this.getTopCardBlocLower = () => {
+			return this.list[this.list.length - this.getCompCardNum()].num;
 		};
 	}
 }
