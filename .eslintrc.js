@@ -36,6 +36,10 @@ module.exports = {
         "selector": "typeAlias",
         "format": ["PascalCase"]
       },
+			{
+				"selector": "typeParameter",
+				"format": ["T", "PascalCase"],
+			},
       {
         "selector": "property",
         "format": null

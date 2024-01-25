@@ -412,7 +412,7 @@ export class Card extends g.E {
 
 	// 意図的にシャッフルされた数列を取得する
 	static getNumbers(param: GameMainParameterObject): number[] {
-		const num: number[] = new ClsCardNum(param).setNumbers(param);
+		const num: number[] = new ClsCardNum(param.random).setNumbers();
 		// console.log("ClsCard::getNumbers");
 		// console.log(num);
 		return num;
@@ -527,178 +527,334 @@ export class Card extends g.E {
 	}
 }
 
-// ┌───┬───┬───┬───┬───┐
-// │   │A,K│678│etc│SUM│
-// ├───┼───┼───┼───┼───┤
-// │  0│ 28│ 16│ 56│100│ 14*2 5.3*3 7*8
-// ├───┼───┼───┼───┼───┤
-// │  1│ 20│ 24│ 56│100│
-// ├───┼───┼───┼───┼───┤
-// │  2│ 14│ 30│ 56│100│
-// ├───┼───┼───┼───┼───┤
-// │  3│ 10│ 34│ 56│100│
-// ├───┼───┼───┼───┼───┤
-// │  4│  8│ 36│ 56│100│ 4*2 12*3 7*8
-// ├───┼───┼───┼───┼───┤
-// │  5│  -│   │   │   │
-// └───┴───┴───┴───┴───┘
+// ┌──┬──┬──┬──┬──┐
+// │    │A,K │678 │etc │SUM │
+// ├──┼──┼──┼──┼──┤
+// │   0│  28│  16│  56│ 100│ 14*2 5.3*3 7*8
+// ├──┼──┼──┼──┼──┤
+// │   1│  20│  24│  56│ 100│
+// ├──┼──┼──┼──┼──┤
+// │   2│  14│  30│  56│ 100│
+// ├──┼──┼──┼──┼──┤
+// │   3│  10│  34│  56│ 100│
+// ├──┼──┼──┼──┼──┤
+// │   4│   8│  36│  56│ 100│ 4*2 12*3 7*8
+// ├──┼──┼──┼──┼──┤
+// │   5│   -│    │    │    │
+// └──┴──┴──┴──┴──┘
 // ↓
-// ┌───┬─────┬─────┬─────┬─────┐
-// │   │ A,K │56789│ etc │ SUM │
-// ├───┼─────┼─────┼─────┼─────┤
-// │  0│  32 │  22 │  46 │ 100 │ 14*2 5.3*3 7*8
-// ├───┼─────┼─────┼─────┼─────┤
-// │  1│  24 │  30 │  46 │ 100 │
-// ├───┼─────┼─────┼─────┼─────┤
-// │  2│  16 │  38 │  46 │ 100 │
-// ├───┼─────┼─────┼─────┼─────┤
-// │  3│   0 │  54 │  46 │ 100 │
-// ├───┼─────┼─────┼─────┼─────┤
-// │  4│   0 │  54 │  46 │ 100 │ 4*2 12*3 7*8
-// ├───┼─────┼─────┼─────┼─────┤
-// │  5│   - │     │     │     │
-// └───┴─────┴─────┴─────┴─────┘
+// ┌──┬──┬──┬──┬──┐
+// │    │A,K │5-9 │etc │SUM │
+// ├──┼──┼──┼──┼──┤
+// │   0│  32│  22│  46│ 100│ 14*2 5.3*3 7*8
+// ├──┼──┼──┼──┼──┤
+// │   1│  24│  30│  46│ 100│
+// ├──┼──┼──┼──┼──┤
+// │   2│  16│  38│  46│ 100│
+// ├──┼──┼──┼──┼──┤
+// │   3│   0│  54│  46│ 100│
+// ├──┼──┼──┼──┼──┤
+// │   4│   0│  54│  46│ 100│ 4*2 12*3 7*8
+// ├──┼──┼──┼──┼──┤
+// │   5│   -│    │    │    │
+// └──┴──┴──┴──┴──┘
+// ↓
+// ┌───┬─────┬─────┬─────┐
+// │      │3枚セット │ランダム  │合計      │
+// ├───┼─────┼─────┼─────┤
+// │   0段│    3枚3組│         1│     3*3+1｜0は最初に出てる場札or最初に出てくる山札
+// ├───┼─────┼─────┼─────┤大きくなるほど終盤に出てくる
+// │     1│    3枚3組│         1│     3*3+1｜
+// ├───┼─────┼─────┼─────┤
+// │     2│    3枚2組│         4│     3*2+4｜
+// ├───┼─────┼─────┼─────┤
+// │     3│    3枚2組│         4│     3*2+4｜
+// ├───┼─────┼─────┼─────┤
+// │     4│    3枚1組│         7│     3*1+7｜
+// ├───┼─────┼─────┼─────┤
+// │   All│   3枚11組│        17│   3*11+17｜33+17=50
+// ├───┼─────┼─────┼─────┤
+// │ (場4)│         -│         4│          ｜
+// └───┴─────┴─────┼─────┘
+// ↓
+// ┌───┬─────┬─────┬─────┐
+// │      │3枚セット │ランダム  │合計      │
+// ├───┼─────┼─────┼─────┤
+// │   0段│       3組│         1│     3*3+1｜最初は積み易いようにする
+// ├───┼─────┼─────┼─────┤[3-5,6-8,9-J]の固定でもいいか？あるいは[1-9,2-T...,5-K]の5種類からランダム
+// │ 他4段│       2組│         4│     3*2+4｜
+// ├───┼─────┼─────┼─────┤
+// │   All│      11組│        17│   3*11+17｜33+17=50 11組としたのは(A-3,2-4,3-5 ... T-Q,J-Kの限定ランダムにしたら)やり易いから
+// ├───┼─────┼─────┼─────┤これにより最初に場にKが3枚以上出る(or Aが3枚以上出る)ことはない(A or Kが3枚はあり得る)
+// │ (場4)│         -│         4│          ｜
+// └───┴─────┴─────┼─────┘
+
 class ClsCardNum {
-	private static edgePercents: number[] = [32, 24, 16, 0, 0];
-	private static specialPercents: number = 54;
-	private edges: number[];
-	private centers: number[];
-	private others: number[];
+	// private static edgePercents: number[] = [32, 24, 16, 0, 0];
+	// private static specialPercents: number = 54;
+	// private edges: number[];
+	// private centers: number[];
+	// private others: number[];
+	private rand: g.RandomGenerator;
+	private sequenceNum: number[];	// {1, 2, 3}, {J, Q, K} などの列 初めの数だけ格納
+	private randomNum: number[];		// 残りの数
+	// getSequence3();
+	// getRandom();
 
 	//
-	constructor(param: GameMainParameterObject) {
-		this.edges = [];		// 8*(A,K)
-		this.centers = [];	// 8*(5,6,7,8,9)
-		this.others = [];		// 8*8
-		// set default value
-		for (let i = 0; i < 8; i++) {
-			// set edgeCards
-			this.edges.push(1);					// A
-			this.edges.push(13);				// K
-			// set centerCards
-			for (let j = 0; j < 5; j++) {
-				// 5,6,7,8,9
-				this.centers.push(5 + j);
+	constructor(rand: g.RandomGenerator) {
+		this.rand = rand;
+		this.sequenceNum = [];
+		this.randomNum = [];
+		// 数列に追加
+		for (let i = 0; i < 11; i++) {
+			this.sequenceNum.push(i + 1);
+			this.sequenceNum.push(i + 1);
+		}
+		// 残りの数
+		for (let i = 0; i < 13; i++) {
+			let n = 2;
+			if (i % 12 === 0) {
+				n = 6;
+			} else if (i % 10 === 1) {
+				n = 4;
 			}
-			// set otherCards
-			for (let j = 0; j < 3; j++) {
-				this.others.push(2 + j);		// 2,3,4
-				this.others.push(10 + j);		// 10,J,Q
+			for (let j = 0; j < n; j++) {
+				this.randomNum.push(i + 1);
 			}
 		}
-		// shuffleArray
-		this.edges = shuffleArray(this.edges, param);
-		this.centers = shuffleArray(this.centers, param);
-		this.others = shuffleArray(this.others, param);
+		// this.edges = [];		// 8*(A,K)
+		// this.centers = [];	// 8*(5,6,7,8,9)
+		// this.others = [];		// 8*8
+		// // set default value
+		// for (let i = 0; i < 8; i++) {
+		// 	// set edgeCards
+		// 	this.edges.push(1);					// A
+		// 	this.edges.push(13);				// K
+		// 	// set centerCards
+		// 	for (let j = 0; j < 5; j++) {
+		// 		// 5,6,7,8,9
+		// 		this.centers.push(5 + j);
+		// 	}
+		// 	// set otherCards
+		// 	for (let j = 0; j < 3; j++) {
+		// 		this.others.push(2 + j);		// 2,3,4
+		// 		this.others.push(10 + j);		// 10,J,Q
+		// 	}
+		// }
+		// // shuffleArray
+		// this.edges = shuffleArray(this.edges, param);
+		// this.centers = shuffleArray(this.centers, param);
+		// this.others = shuffleArray(this.others, param);
+	}
+
+	public getRandom(num: number): number[] {
+		if (num < 1) return [];
+		if (num > this.randomNum.length) return this.randomNum;
+		const array = this._getRandom();
+		for (let i = 0; i < num - 1; i++) {
+			array.push(...this._getRandom());
+		}
+		return array;
+	}
+
+	public getSequence(num: number): number[] {
+		if (num < 1) return [];
+		if (num > this.sequenceNum.length) return this.sequenceNum;
+		const array = this._getSequence();
+		for (let i = 0; i < num - 1; i++) {
+			array.push(...this._getSequence());
+		}
+		return array;
 	}
 
 	/**
 	 * カードの数
 	 */
-	get length(): number {
-		return this.edges.length + this.centers.length + this.others.length;
-	}
+	// get length(): number {
+	// 	return this.edges.length + this.centers.length + this.others.length;
+	// }
 
 	/**
 	 * ランダム(作為的)なカードを作成
-	 * @param scene g.Scene
-	 * @param param GameMainParameterObject
 	 * @returns ClsCard[]
 	 */
-	public setNumbers(param: GameMainParameterObject): number[] {
-		const retNumbers: number[] = [];
-		const random = param.random;
-		// push 10*5=50枚
-		for (let i = 0; i < ClsCardNum.edgePercents.length; i++) {
-			for (let j = 0; j < 10; j++) {
-				// const idx: number = Math.floor(g.game.random.generate() * 100);
-				const idx: number = Math.floor(random.generate() * 100);
-				if (idx < ClsCardNum.edgePercents[i]) {
-					retNumbers.push(this.getEdges());
-				} else if (idx < ClsCardNum.specialPercents) {
-					retNumbers.push(this.getCenters());
-				} else {
-					retNumbers.push(this.getOthers());
-				}
-			}
+	public setNumbers(): number[] {
+		//
+		const array: number[] = [];
+		// 事前に9連番+1の10枚2組を持っておく
+		const array101: number[] = [];
+		let r = Math.floor(this.rand.generate() * 5) + 1;
+		array101.push(...this._getSequenceSpecific(r));
+		array101.push(...this._getRandom());
+		const array102: number[] = [];
+		r = Math.floor(this.rand.generate() * 5) + 1;
+		array102.push(...this._getSequenceSpecific(r));
+		array102.push(...this._getRandom());
+		// -----------------------------
+		// 場札用(54枚)
+		// -----------------------------
+		array.push(...this.getRandom(4));
+		for (let i = 0; i < 4; i++) {
+			const array10: number[] = [];
+			array10.push(...this.getSequence(2));
+			array10.push(...this.getRandom(4));
+			array.push(...shuffleArray(array10, this.rand));
 		}
-		// 残りのカードをpush
-		while (this.length) {
-			if (this.others.length >= 10) {
-				retNumbers.push(this.getRandom(param));
-			} else {
-				const len: number = this.edges.length + this.centers.length;
-				const idx: number = Math.floor(random.generate() * len);
-				if (idx < this.edges.length) {
-					retNumbers.push(this.getEdges());
-				} else {
-					retNumbers.push(this.getCenters());
-				}
-			}
+		array.push(...shuffleArray(array101, this.rand));
+		// -----------------------------
+		// 山札用(50枚)
+		// -----------------------------
+		array.push(...shuffleArray(array102, this.rand));
+		for (let i = 0; i < 4; i++) {
+			const array10: number[] = [];
+			array10.push(...this.getSequence(2));
+			array10.push(...this.getRandom(4));
+			array.push(...shuffleArray(array10, this.rand));
 		}
-		// // test
-		// for (let i = 40; i < 50; i++) {
-		// 	retNumbers[i] = 14;
-		// }
-		return retNumbers;
+		// debug
+		console.log("array101--------------");
+		console.log(...array101);
+		console.log("array102--------------");
+		console.log(...array102);
+		console.log("array-----------------");
+		for (let i = 0; i < 10; i++) {
+			console.log(...array.slice(10 * i, 10 * i + 10));
+		}
+		console.log(...array.slice(100));
+		//
+		return array;
+	}
+	// public setNumbers(param: GameMainParameterObject): number[] {
+	// 	const retNumbers: number[] = [];
+	// 	const random = param.random;
+	// 	// push 10*5=50枚
+	// 	for (let i = 0; i < ClsCardNum.edgePercents.length; i++) {
+	// 		for (let j = 0; j < 10; j++) {
+	// 			// const idx: number = Math.floor(g.game.random.generate() * 100);
+	// 			const idx: number = Math.floor(random.generate() * 100);
+	// 			if (idx < ClsCardNum.edgePercents[i]) {
+	// 				retNumbers.push(this.getEdges());
+	// 			} else if (idx < ClsCardNum.specialPercents) {
+	// 				retNumbers.push(this.getCenters());
+	// 			} else {
+	// 				retNumbers.push(this.getOthers());
+	// 			}
+	// 		}
+	// 	}
+	// 	// 残りのカードをpush
+	// 	while (this.length) {
+	// 		if (this.others.length >= 10) {
+	// 			retNumbers.push(this.getRandom(param));
+	// 		} else {
+	// 			const len: number = this.edges.length + this.centers.length;
+	// 			const idx: number = Math.floor(random.generate() * len);
+	// 			if (idx < this.edges.length) {
+	// 				retNumbers.push(this.getEdges());
+	// 			} else {
+	// 				retNumbers.push(this.getCenters());
+	// 			}
+	// 		}
+	// 	}
+	// 	// // test
+	// 	// for (let i = 40; i < 50; i++) {
+	// 	// 	retNumbers[i] = 14;
+	// 	// }
+	// 	return retNumbers;
+	// }
+
+	/**
+	 * ランダムカードからランダムに1枚取得する
+	 * @returns number[]
+	 */
+	private _getRandom(): number[] {
+		const r = Math.floor(this.randomNum.length * this.rand.generate());
+		return this.randomNum.splice(r, 1);
+	}
+
+	/**
+	 * シーケンスカードからランダムに1組(3枚)取得する
+	 * @returns number[]
+	 */
+	private _getSequence(): number[] {
+		const r = Math.floor(this.sequenceNum.length * this.rand.generate());
+		const s = this.sequenceNum.splice(r, 1)[0];
+		return [s, s + 1, s + 2];
+	}
+
+	/**
+	 * シーケンスカードから指定の3組(9枚)を取得する
+	 * @param num 始めの数字(1～5)
+	 * @returns number[]
+	 */
+	private _getSequenceSpecific(num: number): number[] {
+		const array: number[] = [];
+		for (let i = 0; i < 3; i++) {
+			const idx = this.sequenceNum.indexOf(num);
+			if (idx < 0) return array;
+			const val = this.sequenceNum.splice(idx, 1)[0];
+			array.push(val, val + 1, val + 2);
+			num += 3;
+		}
+		return array;
 	}
 
 	/**
 	 * 端(A,K)のカードを１枚取得する
 	 * @returns ClsCard
 	 */
-	private getEdges(): number {
-		if (this.edges.length > 0) {
-			return this.edges.shift();
-		}
-		if (this.others.length > 0) {
-			return this.others.shift();
-		}
-		return this.centers.shift();
-	}
+	// private getEdges(): number {
+	// 	if (this.edges.length > 0) {
+	// 		return this.edges.shift();
+	// 	}
+	// 	if (this.others.length > 0) {
+	// 		return this.others.shift();
+	// 	}
+	// 	return this.centers.shift();
+	// }
 
 	/**
 	 * 中央(6,7,8)のカードを１枚取得する
 	 * @returns ClsCard
 	 */
-	private getCenters(): number {
-		if (this.centers.length > 0) {
-			return this.centers.shift();
-		}
-		if (this.others.length > 0) {
-			return this.others.shift();
-		}
-		return this.edges.shift();
-	}
+	// private getCenters(): number {
+	// 	if (this.centers.length > 0) {
+	// 		return this.centers.shift();
+	// 	}
+	// 	if (this.others.length > 0) {
+	// 		return this.others.shift();
+	// 	}
+	// 	return this.edges.shift();
+	// }
 
 	/**
 	 * その他(2,3,4,5,9,10,J,Q)のカードを１枚取得する
 	 * @returns ClsCard
 	 */
-	private getOthers(): number {
-		if (this.others.length > 0) {
-			return this.others.shift();
-		}
-		if (this.edges.length > 0) {
-			return this.edges.shift();
-		}
-		return this.centers.shift();
-	}
+	// private getOthers(): number {
+	// 	if (this.others.length > 0) {
+	// 		return this.others.shift();
+	// 	}
+	// 	if (this.edges.length > 0) {
+	// 		return this.edges.shift();
+	// 	}
+	// 	return this.centers.shift();
+	// }
 
 	/**
 	 * ランダムに１枚カードを取得する
 	 * @param param GameMainParameterObject
 	 * @returns ClsCard
 	 */
-	private getRandom(param: GameMainParameterObject): number {
-		const random = param.random;
-		// const idx: number = Math.floor(g.game.random.generate() * this.length);
-		const idx: number = Math.floor(random.generate() * this.length);
-		if (idx < this.edges.length) {
-			return this.getEdges();
-		} else if (idx < this.centers.length) {
-			return this.getCenters();
-		}
-		return this.getOthers();
-	}
+	// private getRandom(param: GameMainParameterObject): number {
+	// 	const random = param.random;
+	// 	// const idx: number = Math.floor(g.game.random.generate() * this.length);
+	// 	const idx: number = Math.floor(random.generate() * this.length);
+	// 	if (idx < this.edges.length) {
+	// 		return this.getEdges();
+	// 	} else if (idx < this.centers.length) {
+	// 		return this.getCenters();
+	// 	}
+	// 	return this.getOthers();
+	// }
 }

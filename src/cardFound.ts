@@ -2,12 +2,16 @@ import tl = require("@akashic-extension/akashic-timeline");
 import { CardArea } from "./cardArea";
 import { GameMain } from "./gameMain";
 import { SceneGame } from "./sceneGame";
+import { Card } from "./card";
 
 /**
  * カード置き場クラス(組札)
  */
 export class CardFound extends CardArea {
 	public sortCards: () => void;
+	public isAddCards = (cards: Card[]) => { return 0 };
+	public getCards = (x: number, y: number) => { return null };
+	public collisionArea = null;
 	/**
 	 * コンストラクタ
 	 * @param gameMain ゲーム画面

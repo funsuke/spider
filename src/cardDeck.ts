@@ -129,7 +129,8 @@
 // 	}
 // }
 
-import { CardArea } from "./cardArea";
+import { Card } from "./card";
+import { CardArea } from './cardArea';
 import { GameMain } from "./gameMain";
 
 /**
@@ -137,6 +138,7 @@ import { GameMain } from "./gameMain";
  */
 export class CardDeck extends CardArea {
 	public sortCards: () => void;
+	public collisionArea = null;
 	/**
 	 * コンストラクタ
 	 * @param gameMain ゲーム画面
@@ -160,4 +162,6 @@ export class CardDeck extends CardArea {
 			}
 		};
 	}
+	isAddCards = (cards: Card[]) => { return 0 };
+	getCards = (x: number, y: number) => { return null };
 }

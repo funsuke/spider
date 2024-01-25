@@ -239,6 +239,7 @@ import tl = require("@akashic-extension/akashic-timeline");
 import { CardArea } from "./cardArea";
 import { GameMain } from "./gameMain";
 import { SceneGame } from "./sceneGame";
+import { Card } from "./card";
 
 /**
  * カードの束
@@ -258,6 +259,10 @@ export class CardField extends CardArea {
 	public getCompCardPos: () => number;
 	public getCompCardNum: () => number;
 	public getTopCardBlocLower: () => number;
+	public collisionArea: g.FilledRect;
+	public isAddCards: (cards: Card[]) => number;
+	public getCards: (x: number, y: number) => { num: number; cards: Card[] } | null;
+
 	/**
 	 * コンストラクタ
 	 * @param gameMain ゲーム画面
@@ -327,7 +332,7 @@ export class CardField extends CardArea {
 		this.getCards = (x, y) => {
 			for (let i = this.list.length - 1; i >= 0; i--) {
 				const c = this.list[i];
-				if (!c.isOpen) return;
+				if (!c.isOpen) return null;
 				if (i === this.list.length - 1 || c.num === this.list[i + 1].num + 1) {
 					if (g.Collision.intersect(x, y, 0, 0, c.x, c.y, c.width, c.height)) {
 						return { num: i, cards: this.list.slice(i) };

@@ -5,7 +5,7 @@ export type TypeSaveData = {
 	win: number;		// 勝利数
 	max: number;		// ベストスコア
 	ave: number;		// 平均スコア
-};
+} | null;
 
 /**
  * セーブデータ
@@ -34,7 +34,7 @@ export class SaveData extends g.Sprite {
 		const paraLabel: g.LabelParameterObject = {
 			scene: scene,
 			text: "0",
-			font: scene.font,
+			font: scene.font as g.Font,
 			fontSize: 20,
 			width: 320,
 			textAlign: "right",
@@ -61,6 +61,7 @@ export class SaveData extends g.Sprite {
 		const score: number = g.game.vars.gameState.score;
 		// 取得
 		saveData = this.getSaveData();
+		if (saveData === null) return;
 		// 計算
 		saveData.ply += 1;
 		if (flgClear) {
@@ -82,6 +83,7 @@ export class SaveData extends g.Sprite {
 	public updateSaveData(saveData: TypeSaveData = null): void {
 		if (saveData === null) {
 			saveData = this.getSaveData();
+			if (saveData === null) return;
 		}
 		// セーブデータ
 		this.lblPly.text = saveData.ply.toString() + "K";
@@ -109,7 +111,7 @@ export class SaveData extends g.Sprite {
 		};
 		if (window.localStorage) {
 			// console.log("getSaveDataでlocalStorageは使えます");
-			const data = JSON.parse(localStorage.getItem("gm28806_saveData"));
+			const data = JSON.parse(<string>localStorage.getItem("gm28806_saveData"));
 			// console.log(data);
 			if (data !== null) saveData = data;
 		} else {

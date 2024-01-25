@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+		"forceConsistentCasingInFileNames": true,
     "target": "ES5",
     "lib": [
       "es5",
@@ -11,6 +12,7 @@
     "types": [],
     "allowUmdGlobalAccess": true,
     // "noImplicitUseStrict": true,
+		"strict": true
   },
   "files": [
     "node_modules/@akashic/akashic-engine/index.runtime.d.ts"

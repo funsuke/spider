@@ -10,10 +10,10 @@ export abstract class CardArea extends g.Sprite {
 	public addCards: (cards: Card[]) => void;
 	public cutCards: (num: number) => void;
 	public getScore: () => number;
-	public isAddCards: (cards: Card[]) => number;
-	public getCards: (x: number, y: number) => { num: number; cards: Card[] } | null;
-	public sortCards: () => void;
-	public collisionArea: g.FilledRect;
+	public abstract isAddCards: (cards: Card[]) => number;
+	public abstract getCards: (x: number, y: number) => { num: number; cards: Card[] } | null;
+	public abstract sortCards: () => void;
+	public abstract collisionArea: g.FilledRect | null;
 
 	/**
 	 * コンストラクタ

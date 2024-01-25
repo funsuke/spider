@@ -4,14 +4,10 @@
  * @param param ゲームパラメータ
  * @returns シャッフルされた配列
  */
-
-import { GameMainParameterObject } from "./parameterObject";
-
-// eslint-disable-next-line @typescript-eslint/naming-convention
-export function shuffleArray<T>(array: T[], param: GameMainParameterObject): T[] {
+export function shuffleArray<T>(array: T[], rand: g.RandomGenerator): T[] {
 	const shfArray = [...array];
 	for (let i = shfArray.length - 1; i > 0; i--) {
-		const j = Math.floor(param.random.generate() * (i + 1));
+		const j = Math.floor(rand.generate() * (i + 1));
 		[shfArray[i], shfArray[j]] = [shfArray[j], shfArray[i]];
 	}
 	return shfArray;
@@ -23,8 +19,7 @@ export function shuffleArray<T>(array: T[], param: GameMainParameterObject): T[]
  * @param param ゲームパラメータ
  * @returns 要素
  */
-// eslint-disable-next-line @typescript-eslint/naming-convention
-export function getRandomValue<T>(array: T[], param: GameMainParameterObject): T[] {
-	const idx: number = Math.floor(param.random.generate() * array.length);
+export function getRandomValue<T>(array: T[], rand: g.RandomGenerator): T[] {
+	const idx: number = Math.floor(rand.generate() * array.length);
 	return array.splice(idx, 1);
 }

@@ -27,5 +27,6 @@ export class Config extends g.FrameSprite {
 			this.modified();
 			this.bgmEvent();
 		});
+		this.bgmEvent = () => { return; }
 	}
 }

@@ -141,9 +141,15 @@ export class GameMain extends g.E {
 		// 	[cards[i], cards[j]] = [cards[j], cards[i]];
 		// }
 		const cardNum: number[] = Card.getNumbers(param);
-		// console.log(cardNum);
+		//
+		console.log("cardNum-----------------");
+		for (let i = 0; i < 10; i++) {
+			console.log(...cardNum.slice(10 * i, 10 * i + 10));
+		}
+		console.log(...cardNum.slice(100));
+		//
 		for (let i = 0; cardNum.length; i++) {
-			const c = new Card(this, cardNum.pop(), 0, 0);
+			const c = new Card(this, <number>cardNum.pop(), 0, 0);
 			cards.push(c);
 		}
 		// 山札にセット
@@ -165,9 +171,7 @@ export class GameMain extends g.E {
 			});
 		}
 		// 積んでるか確認
-		console.log("場札に配る_in  mateState=" + this.mateState);
 		this.mateState = this.getMateState();
-		console.log("場札に配る_out mateState=" + this.mateState);
 		// 場札ソート
 		fieldAreas.forEach((area, i) => {
 			area.sortCards();
@@ -290,8 +294,8 @@ export class GameMain extends g.E {
 				// 動かそうとしているカード(複数)の取得
 				const cards = srcArea.getCards(ev.point.x, ev.point.y);
 				if (!cards) continue;
-				let moveArea: CardField = null;
-				let moveSpaceArea: CardField = null;
+				let moveArea = null;
+				let moveSpaceArea = null;
 				for (let j = 1; j < fieldAreas.length; j++) {
 					const dstArea = fieldAreas[(i + j) % fieldAreas.length];
 					const isAddPattern: number = dstArea.isAddCards(cards.cards);

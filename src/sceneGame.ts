@@ -17,15 +17,15 @@ export class SceneGame extends g.Scene {
 	public isDebug: boolean = false;
 	public isStart: boolean = false;
 	public isClear: boolean;
-	public font: g.Font;
+	public font: g.Font | null = null;
 	public timeLimit: number = 180;	// 制限時間(180秒)
-	public time: number;
+	public time: number = this.timeLimit;
 	public reset: () => void;
 	public boardId: number = 1;
-	private saveData: SaveData;
-	private layer0: g.E;
-	private bgmPlayer: g.AudioPlayer;
-	private isCheat: boolean;
+	private saveData: SaveData | null = null;
+	private layer0: g.E | null = null;
+	private bgmPlayer: g.AudioPlayer | null = null;
+	private isCheat: boolean = false;
 
 	/**
 	 * コンストラクタ
@@ -60,6 +60,14 @@ export class SceneGame extends g.Scene {
 		 */
 		this.onLoad.add(() => {
 			// -----------------------------
+			// ビットマップフォント
+			// -----------------------------
+			// ビットマップフォント(黒)を生成
+			this.font = new g.BitmapFont({
+				src: this.asset.getImageById("number"),
+				glyphInfo: JSON.parse(this.asset.getTextById("glyph").data),
+			});
+			// -----------------------------
 			// BGM再生
 			// -----------------------------
 			const bgm = this.asset.getAudioById("nc298326");
@@ -78,15 +86,6 @@ export class SceneGame extends g.Scene {
 			});
 			// レイヤー0
 			this.layer0 = new g.E({ scene: this, parent: this, });
-			// -----------------------------
-			// ビットマップフォント
-			// -----------------------------
-			// ビットマップフォント(黒)を生成
-			this.font = new g.BitmapFont({
-				src: this.asset.getImageById("number"),
-				glyphInfo: JSON.parse(this.asset.getTextById("glyph").data),
-			});
-
 			// -----------------------------
 			// タイトル
 			// -----------------------------
@@ -124,9 +123,9 @@ export class SceneGame extends g.Scene {
 			config.bgmEvent = () => {
 				if (!this.isDebug) {
 					if (config.frameNumber === 0) {
-						this.bgmPlayer.changeVolume(0.2);
+						(this.bgmPlayer as g.AudioPlayer).changeVolume(0.2);
 					} else {
-						this.bgmPlayer.changeVolume(0.0);
+						(this.bgmPlayer as g.AudioPlayer).changeVolume(0.0);
 					}
 				}
 			};
@@ -137,6 +136,8 @@ export class SceneGame extends g.Scene {
 			title.append(this.saveData);
 			this.saveData.updateSaveData();
 		});
+		this.addScore = (score: number) => { return };
+		this.reset = () => { return };
 	}
 	/**
 	 * 効果音を先生する
@@ -175,7 +176,7 @@ export class SceneGame extends g.Scene {
 		const lblScore = new g.Label({
 			scene: this,
 			text: "0p",
-			font: this.font,
+			font: this.font as g.Font,
 			fontSize: 32,
 			x: 450,
 			y: 650,
@@ -198,7 +199,7 @@ export class SceneGame extends g.Scene {
 		const lblTime = new g.Label({
 			scene: this,
 			text: "0",
-			font: this.font,
+			font: this.font as g.Font,
 			fontSize: 32,
 			x: 1100,
 			y: 650,
@@ -294,7 +295,7 @@ export class SceneGame extends g.Scene {
 			btnExtend.modified();
 			this.append(btnExtend);
 			btnExtend.pushEvent = () => {
-				this.saveData.hide();
+				(this.saveData as SaveData).hide();
 				this.isStart = true;
 				sprState.hide();
 				rctFg.opacity = 0;
@@ -358,12 +359,12 @@ export class SceneGame extends g.Scene {
 					this.addScore(Math.ceil(this.time));
 				}
 				// セーブデータ表示
-				this.append(this.saveData);
+				this.append(<SaveData>this.saveData);
 				if (g.game.vars.gameState.score !== 0) {
-					this.saveData.calcSaveData(this.isClear ? true : false);
+					(this.saveData as SaveData).calcSaveData(this.isClear ? true : false);
 				}
 				if (!this.isCheat) {
-					this.saveData.show();
+					(this.saveData as SaveData).show();
 				}
 				// アツマール処理
 				this.setTimeout(() => {
@@ -465,11 +466,11 @@ export class SceneGame extends g.Scene {
 			// クリアフラグ
 			this.isClear = false;
 			// 個人成績
-			this.saveData.hide();
+			(this.saveData as SaveData).hide();
 			// ゲーム画面1
 			gameMain.destroy();
 			gameMain = new GameMain(param);
-			this.layer0.append(gameMain);
+			(this.layer0 as g.E).append(gameMain);
 			// タイマー
 			this.time = this.timeLimit;
 			lblTime.text = "" + this.time;
