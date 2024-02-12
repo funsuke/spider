@@ -4,7 +4,6 @@ import { CardArea } from "./cardArea";
 import { CardDeck } from "./cardDeck";
 import { CardBlock, CardField } from "./cardField";
 import { CardFound } from "./cardFound";
-import { GameMainParameterObject } from "./parameterObject";
 import { SceneGame } from "./sceneGame";
 
 export class GameMain extends g.E {
@@ -13,7 +12,7 @@ export class GameMain extends g.E {
 	/**
 	 * コンストラクタ
 	 */
-	constructor(param: GameMainParameterObject) {
+	constructor(param: g.GameMainParameterObject) {
 		// 初期化
 		const scene = g.game.scene() as SceneGame;
 		super({ scene: scene, width: g.game.width, height: g.game.height, touchable: true });

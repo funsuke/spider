@@ -72,6 +72,8 @@
 
 import { SceneGame } from "./sceneGame";
 
-export function main(param: g.GameMainParameterObject): void {
+function main(param: g.GameMainParameterObject): void {
 	g.game.pushScene(new SceneGame(param));
 }
+
+export = main;

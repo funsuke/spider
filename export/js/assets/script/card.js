@@ -504,7 +504,7 @@ var Card = /** @class */ (function (_super) {
     }
     // 意図的にシャッフルされた数列を取得する
     Card.getNumbers = function (param) {
-        var num = new ClsCardNum(param.random).setNumbers();
+        var num = new ClsCardNum(g.game.random).setNumbers();
         // console.log("ClsCard::getNumbers");
         // console.log(num);
         return num;

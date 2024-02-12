@@ -388,7 +388,6 @@
 
 import tl = require("@akashic-extension/akashic-timeline");
 import { GameMain } from "./gameMain";
-import { GameMainParameterObject } from "./parameterObject";
 import { SceneGame } from "./sceneGame";
 import { shuffleArray } from "./utilAkashic";
 
@@ -411,8 +410,8 @@ export class Card extends g.E {
 	public isShadow: boolean;
 
 	// 意図的にシャッフルされた数列を取得する
-	static getNumbers(param: GameMainParameterObject): number[] {
-		const num: number[] = new ClsCardNum(param.random).setNumbers();
+	static getNumbers(param: g.GameMainParameterObject): number[] {
+		const num: number[] = new ClsCardNum(g.game.random).setNumbers();
 		// console.log("ClsCard::getNumbers");
 		// console.log(num);
 		return num;
