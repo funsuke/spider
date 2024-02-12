@@ -70,9 +70,8 @@
 // ・上(A,2)と下(Q,K)が全然来ない場合、こちらの左4つの場札を捲れば
 // 　出やすいという経験値が溜まって解きやすくなるだろう
 
-import { GameMainParameterObject } from "./parameterObject";
 import { SceneGame } from "./sceneGame";
 
-export function main(param: GameMainParameterObject): void {
+export function main(param: g.GameMainParameterObject): void {
 	g.game.pushScene(new SceneGame(param));
 }
