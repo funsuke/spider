@@ -379,6 +379,10 @@ var SceneGame = /** @class */ (function (_super) {
                 if (!_this.isCheat) {
                     _this.saveData.show();
                 }
+                // アツマール避難所対応
+                window.RPGAtsumaru.scoreboards
+                    .setRecord(1, g.game.vars.gameState.score).
+                    then(function () { window.RPGAtsumaru.scoreboards.display(1); });
                 // アツマール処理
                 // this.setTimeout(() => {
                 // 	if (param.isAtsumaru) {
