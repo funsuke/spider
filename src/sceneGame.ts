@@ -415,16 +415,16 @@ export class SceneGame extends g.Scene {
 			if (score === 0) return;
 			if (!this.isStart) return;
 			let s: number = g.game.vars.gameState.score - 13 ** 2 * 8 * 100;
-			if (s > 180 || (s > 0 && s <= 180 && score >= 100)) {
-				this.isCheat = true;
-				g.game.vars.gameState.score = 0;
-				new g.Sprite({
-					scene: this,
-					src: this.asset.getImageById("cheat"),
-					parent: this,
-				});
-				return;
-			}
+			// if (s > 180 || (s > 0 && s <= 180 && score >= 100)) {
+			// 	this.isCheat = true;
+			// 	g.game.vars.gameState.score = 0;
+			// 	new g.Sprite({
+			// 		scene: this,
+			// 		src: this.asset.getImageById("cheat"),
+			// 		parent: this,
+			// 	});
+			// 	return;
+			// }
 			g.game.vars.gameState.score += score;
 			// スコアアップアニメーション
 			this.timeLine.create(this).every((e: number, p: number) => {
