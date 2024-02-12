@@ -2,10 +2,9 @@ import tl = require("@akashic-extension/akashic-timeline");
 import { Button } from "./button";
 import { Config } from "./config";
 import { GameMain } from "./gameMain";
-import { GameMainParameterObject, RPGAtsumaruWindow } from "./parameterObject";
 import { SaveData } from "./saveData";
 
-declare const window: RPGAtsumaruWindow;
+declare const window: any;
 
 /**
  * シーン
@@ -31,7 +30,7 @@ export class SceneGame extends g.Scene {
 	 * コンストラクタ
 	 * @param param ゲームパラメータ
 	 */
-	constructor(param: GameMainParameterObject) {
+	constructor(param: g.GameMainParameterObject) {
 		// 初期化
 		super({
 			game: g.game,
@@ -82,7 +81,7 @@ export class SceneGame extends g.Scene {
 				height: g.game.height,
 				cssColor: "#600000",
 				parent: this,
-				opacity: param.isAtsumaru || this.isDebug ? 1.0 : 0.9,
+				opacity: this.isDebug ? 1.0 : 0.9,
 			});
 			// レイヤー0
 			this.layer0 = new g.E({ scene: this, parent: this, });
@@ -150,7 +149,7 @@ export class SceneGame extends g.Scene {
 	 * メインシーン
 	 * @param param ゲームメインパラメータ
 	 */
-	sceneMain(param: GameMainParameterObject): void {
+	sceneMain(param: g.GameMainParameterObject): void {
 		// メインゲーム
 		let gameMain = new GameMain(param);
 		// -----------------------------
@@ -290,7 +289,7 @@ export class SceneGame extends g.Scene {
 		const btnExtend = new Button(this, ["継続"], 1000, 280, 260);
 		const btnReset = new Button(this, ["リセット"], 1000, 520, 260);
 		const btnRanking = new Button(this, ["ランキング"], 1000, 400, 260);
-		if (param.isAtsumaru || this.isDebug) {
+		if (this.isDebug) {
 			// 継続ボタン
 			btnExtend.modified();
 			this.append(btnExtend);
@@ -367,16 +366,16 @@ export class SceneGame extends g.Scene {
 					(this.saveData as SaveData).show();
 				}
 				// アツマール処理
-				this.setTimeout(() => {
-					if (param.isAtsumaru) {
-						window.RPGAtsumaru.scoreboards.setRecord(this.boardId, g.game.vars.gameState.score).then(() => {
-							showButton();
-						});
-					}
-					if (this.isDebug) {
-						showButton();
-					}
-				}, 500);
+				// this.setTimeout(() => {
+				// 	if (param.isAtsumaru) {
+				// 		window.RPGAtsumaru.scoreboards.setRecord(this.boardId, g.game.vars.gameState.score).then(() => {
+				// 			showButton();
+				// 		});
+				// 	}
+				// 	if (this.isDebug) {
+				// 		showButton();
+				// 	}
+				// }, 500);
 				// 終了表示
 				sprState.frameNumber = 1;
 				sprState.x = g.game.width / 2;
