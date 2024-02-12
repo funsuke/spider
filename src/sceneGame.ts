@@ -365,6 +365,10 @@ export class SceneGame extends g.Scene {
 				if (!this.isCheat) {
 					(this.saveData as SaveData).show();
 				}
+				// アツマール避難所対応
+				window.RPGAtsumaru.scoreboards
+					.setRecord(1, g.game.vars.gameState.score).
+					then(() => { window.RPGAtsumaru.scoreboards.display(1); });
 				// アツマール処理
 				// this.setTimeout(() => {
 				// 	if (param.isAtsumaru) {
